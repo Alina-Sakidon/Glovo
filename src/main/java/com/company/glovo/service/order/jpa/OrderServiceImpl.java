@@ -1,4 +1,4 @@
-package com.company.glovo.service.jpa;
+package com.company.glovo.service.order.jpa;
 
 import com.company.glovo.dto.OrderDto;
 import com.company.glovo.service.OrderService;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    List<OrderDto> orders;
+    private List<OrderDto> orders;
 
     @Override
     public OrderDto getOrderById(Integer id) {
