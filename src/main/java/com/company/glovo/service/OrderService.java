@@ -10,7 +10,7 @@ public interface OrderService {
 
     List<OrderDto> getOrders();
 
-    void saveOrder(OrderDto dto);
+    void saveNewOrder(OrderDto dto);
 
     void  updateOrder(Integer id, OrderDto dto);
 

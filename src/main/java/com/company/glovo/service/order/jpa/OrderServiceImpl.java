@@ -1,9 +1,9 @@
 package com.company.glovo.service.order.jpa;
 
 import com.company.glovo.dto.OrderDto;
+import com.company.glovo.repository.jdbc.OrderJDBCRepository;
 import com.company.glovo.service.OrderService;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,36 +13,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-
-    @NonNull
-    private List<OrderDto> orders;
+    private final OrderJDBCRepository orderJDBCRepository;
 
     @Override
     public OrderDto getOrderById(Integer id) {
-        return orders.stream().filter(o -> o.getId().equals(id)).findFirst().orElseThrow(NullPointerException::new);
+        return orderJDBCRepository.getById(id);
     }
 
     @Override
     public List<OrderDto> getOrders() {
-        return orders;
+        return orderJDBCRepository.getAll();
     }
 
     @Override
-    public void saveOrder(OrderDto dto) {
-        orders.add(dto);
+    public void saveNewOrder(OrderDto dto) {
+        orderJDBCRepository.save(dto);
     }
 
     @Override
     public void updateOrder(Integer id, OrderDto dto) {
-        orders.stream().filter(o -> o.getId().equals(id)).findFirst()
-                .map(f -> new OrderDto(dto.getId(), dto.getDate(), dto.getCost(), dto.getProducts()))
-                .orElseThrow(NullPointerException::new);
+        OrderDto order = orderJDBCRepository.getById(id);
+        order.setDate(dto.getDate());
+        order.setCost(dto.getCost());
+        orderJDBCRepository.updateById(order);
     }
 
     @Override
     public void deleteOrder(Integer id) {
-        OrderDto order = orders.stream().filter(o -> o.getId().equals(id)).findFirst()
-                .orElseThrow(NullPointerException::new);
-        orders.remove(order);
+       orderJDBCRepository.deleteById(id);
     }
 }
