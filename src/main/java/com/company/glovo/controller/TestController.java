@@ -25,10 +25,10 @@ public class TestController {
             .cost(12569874.5).build();
 
     @GetMapping()
-    public /*Optional<List<OrderDto>>*/ /*Optional<OrderDto>*/ void testService() {
+    public Optional<List<OrderDto>> /*Optional<OrderDto>*//* void*/ testService() {
         // return orderService.getOrderById(22);
-         orderService.saveNewOrder(orderDto);
-        //  return orderService.getOrders();
+        // orderService.saveNewOrder(orderDto);
+          return orderService.getOrders();
         // orderService.deleteOrder(4);
         //orderService.updateOrder(1, orderDto);
     }

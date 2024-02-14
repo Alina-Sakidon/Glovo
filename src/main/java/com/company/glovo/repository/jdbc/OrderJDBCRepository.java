@@ -31,11 +31,7 @@ public class OrderJDBCRepository {
     }
 
     public Optional<List<OrderDto>> getAll() {
-        try {
-            return Optional.of(jdbcTemplate.query(SELECT_ALL_ORDERS, new OrderRowMapper()));
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+        return Optional.of(jdbcTemplate.query(SELECT_ALL_ORDERS, new OrderRowMapper()));
     }
 
     public void save(OrderDto orderDto) {
