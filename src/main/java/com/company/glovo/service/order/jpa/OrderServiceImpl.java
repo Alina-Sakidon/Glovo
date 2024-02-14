@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,12 +17,12 @@ public class OrderServiceImpl implements OrderService {
     private final OrderJDBCRepository orderJDBCRepository;
 
     @Override
-    public OrderDto getOrderById(Integer id) {
+    public Optional<OrderDto> getOrderById(Integer id) {
         return orderJDBCRepository.getById(id);
     }
 
     @Override
-    public List<OrderDto> getOrders() {
+    public Optional<List<OrderDto>> getOrders() {
         return orderJDBCRepository.getAll();
     }
 
@@ -32,10 +33,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrder(Integer id, OrderDto dto) {
-        OrderDto order = orderJDBCRepository.getById(id);
-        order.setDate(dto.getDate());
-        order.setCost(dto.getCost());
-        orderJDBCRepository.updateById(order);
+        Optional<OrderDto> order = orderJDBCRepository.getById(id);
+        if(order.isPresent()) {
+            order.get().setDate(dto.getDate());
+            order.get().setCost(dto.getCost());
+            orderJDBCRepository.updateById(order.get());
+        }
     }
 
     @Override

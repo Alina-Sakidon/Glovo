@@ -17,7 +17,6 @@ public class OrderRowMapper implements RowMapper<OrderDto> {
         orderDto.setId(rs.getInt("id"));
         orderDto.setCost(rs.getDouble("cost"));
         orderDto.setDate((LocalDate) ParserHelper.parseValue(rs.getDate("date"), Date::toLocalDate));
-        //todo do we need PRODUCTS list here?
         return orderDto;
     }
 

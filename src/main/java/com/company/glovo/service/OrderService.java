@@ -3,12 +3,13 @@ package com.company.glovo.service;
 import com.company.glovo.dto.OrderDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
 
-    OrderDto getOrderById(Integer id);
+    Optional<OrderDto> getOrderById(Integer id);
 
-    List<OrderDto> getOrders();
+    Optional<List<OrderDto>> getOrders();
 
     void saveNewOrder(OrderDto dto);
 
