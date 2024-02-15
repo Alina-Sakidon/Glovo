@@ -19,7 +19,8 @@ public class OrderController {
     @GetMapping()
     public ResponseEntity<List<OrderDto>> getOrders() {
         Optional<List<OrderDto>> orders = orderService.getOrders();
-        return orders.map(orderDtos -> ResponseEntity.ok().body(orderDtos)).orElseGet(() -> ResponseEntity.ok().build());
+        return orders.map(orderDtos -> ResponseEntity.ok().body(orderDtos))
+                .orElseGet(() -> ResponseEntity.ok().build());
     }
 
     @GetMapping("/{orderId}")
