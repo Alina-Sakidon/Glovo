@@ -34,15 +34,15 @@ public class OrderJDBCRepository {
         return Optional.of(jdbcTemplate.query(SELECT_ALL_ORDERS, new OrderRowMapper()));
     }
 
-    public void save(OrderDto orderDto) {
-        jdbcTemplate.update(SAVE_NEW_ORDER, orderDto.getDate(), orderDto.getCost());
+    public boolean save(OrderDto orderDto) {
+        return jdbcTemplate.update(SAVE_NEW_ORDER, orderDto.getDate(), orderDto.getCost()) > 0;
     }
 
-    public void updateById(OrderDto orderDto) {
-        jdbcTemplate.update(UPDATE_ORDER + orderDto.getId(), orderDto.getDate(), orderDto.getCost());
+    public boolean updateById(OrderDto orderDto) {
+        return jdbcTemplate.update(UPDATE_ORDER + orderDto.getId(), orderDto.getDate(), orderDto.getCost()) > 0;
     }
 
-    public void deleteById(int id) {
-        jdbcTemplate.update(DELETE_ORDER_BY_ID + id);
+    public boolean deleteById(int id) {
+        return jdbcTemplate.update(DELETE_ORDER_BY_ID + id) > 0;
     }
 }

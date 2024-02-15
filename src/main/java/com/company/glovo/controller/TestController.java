@@ -3,33 +3,53 @@ package com.company.glovo.controller;
 import com.company.glovo.dto.OrderDto;
 import com.company.glovo.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@RequestMapping("/test")
+@RequestMapping("/api/v1/orders")
 @RestController
 public class TestController {
 
     private final OrderService orderService;
 
-    private OrderDto orderDto = OrderDto.builder()
-            .date(LocalDate.now())
-            .cost(12569874.5).build();
-
     @GetMapping()
-    public Optional<List<OrderDto>> /*Optional<OrderDto>*//* void*/ testService() {
-        // return orderService.getOrderById(22);
-        // orderService.saveNewOrder(orderDto);
-          return orderService.getOrders();
-        // orderService.deleteOrder(4);
-        //orderService.updateOrder(1, orderDto);
+    public ResponseEntity<List<OrderDto>> getOrders() {
+        Optional<List<OrderDto>> orders = orderService.getOrders();
+        return orders.map(orderDtos -> ResponseEntity.ok().body(orderDtos)).orElseGet(() -> ResponseEntity.ok().build());
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") Integer orderId) {
+        return orderService.getOrderById(orderId)
+                .map(oder -> ResponseEntity.ok().body(oder))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<OrderDto> createNewOrder(@RequestBody OrderDto orderDto) {
+        if (orderService.saveNewOrder(orderDto)) {
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.badRequest().build();
+    }
+
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<OrderDto> deleteOrderById(@PathVariable("orderId") Integer orderId) {
+        if (orderService.deleteOrder(orderId)) {
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/{orderId}")
+    public ResponseEntity<OrderDto> updateOrderById(@PathVariable("orderId") Integer orderId, @RequestBody OrderDto orderDto) {
+        if (orderService.updateOrder(orderId, orderDto)) {
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.badRequest().build();
     }
 }

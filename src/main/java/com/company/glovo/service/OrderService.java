@@ -11,9 +11,9 @@ public interface OrderService {
 
     Optional<List<OrderDto>> getOrders();
 
-    void saveNewOrder(OrderDto dto);
+    boolean saveNewOrder(OrderDto dto);
 
-    void  updateOrder(Integer id, OrderDto dto);
+    boolean updateOrder(Integer id, OrderDto dto);
 
-    void deleteOrder(Integer id);
+    boolean deleteOrder(Integer id);
 }
