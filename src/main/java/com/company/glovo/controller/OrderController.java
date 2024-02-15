@@ -3,7 +3,6 @@ package com.company.glovo.controller;
 import com.company.glovo.dto.OrderDto;
 import com.company.glovo.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +30,6 @@ public class OrderController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<OrderDto> createNewOrder(@RequestBody OrderDto orderDto) {
         if (orderService.saveNewOrder(orderDto)) {
             return ResponseEntity.ok().build();
