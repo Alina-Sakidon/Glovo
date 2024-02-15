@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/orders")
 @RestController
-public class TestController {
+public class OrderController {
 
     private final OrderService orderService;
 
