@@ -9,7 +9,7 @@ public interface OrderService {
 
     Optional<OrderDto> getOrderById(Integer id);
 
-    Optional<List<OrderDto>> getOrders();
+    List<OrderDto> getOrders();
 
     boolean saveNewOrder(OrderDto dto);
 

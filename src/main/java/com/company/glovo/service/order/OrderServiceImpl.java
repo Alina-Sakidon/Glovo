@@ -1,10 +1,8 @@
 package com.company.glovo.service.order;
 
 import com.company.glovo.dto.OrderDto;
-import com.company.glovo.exception.ResourceNotFoundException;
 import com.company.glovo.model.Order;
 import com.company.glovo.repository.converter.OrderConverter;
-import com.company.glovo.repository.jdbc.OrderJDBCRepository;
 import com.company.glovo.repository.order.OrderRepository;
 import com.company.glovo.service.OrderService;
 
@@ -32,9 +30,9 @@ public class OrderServiceImpl implements OrderService {
 }
 
 @Override
-public Optional<List<OrderDto>> getOrders() {
-    // return orderJDBCRepository.getAll();
-    return null;
+public List<OrderDto> getOrders() {
+    Iterable<Order> orders = orderRepository.findAll();
+    return orderConverter.fromModel(orders);
 }
 
 @Override

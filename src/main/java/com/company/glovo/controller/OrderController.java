@@ -5,6 +5,7 @@ import com.company.glovo.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -18,14 +19,13 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    /*@GetMapping()
+    @GetMapping()
     public ResponseEntity<List<OrderDto>> getOrders() {
-        Optional<List<OrderDto>> orders = orderService.getOrders();
-        return orders.map(orderDtos -> ResponseEntity.ok().body(orderDtos))
-                .orElseGet(() -> ResponseEntity.ok().build());
-    }*/
+        List<OrderDto> orders = orderService.getOrders();
+        return ResponseEntity.ok().body(orders);
+    }
 
-    /*@GetMapping()
+   /* @GetMapping()
     public ApiResponse<List<OrderDto>> getOrders() {
         ApiResponse<List<OrderDto>> response = new ApiResponse<>();
         Optional<List<OrderDto>> orders = orderService.getOrders();
