@@ -38,6 +38,13 @@ public class OrderConverter {
                 .build();
     }
 
+    public Order toModel(Order order, OrderDto orderDto){
+        order.setDate(orderDto.getDate());
+        order.setCost(orderDto.getCost());
+        order.setProducts(productsToModel(orderDto.getProducts()));
+        return order;
+    }
+
     private List<ProductDto> productsFromModel(List<Product> products) {
         List<ProductDto> productDtoList = new ArrayList<>();
         if (!products.isEmpty()) {
@@ -45,7 +52,8 @@ public class OrderConverter {
                 ProductDto productDto = ProductDto.builder()
                         .id(product.getId())
                         .name(product.getName())
-                        .cost(product.getCost()).build();
+                        .cost(product.getCost())
+                        .build();
                 productDtoList.add(productDto);
             }
         }
@@ -57,7 +65,7 @@ public class OrderConverter {
         if (!dtos.isEmpty()) {
             for (ProductDto dto : dtos) {
                 Product product = Product.builder()
-                        .id(dto.getId())//todo
+                        .id(dto.getId())
                         .name(dto.getName())
                         .cost(dto.getCost())
                         .build();

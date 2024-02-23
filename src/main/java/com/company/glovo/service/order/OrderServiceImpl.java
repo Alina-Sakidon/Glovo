@@ -23,40 +23,39 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<OrderDto> getOrderById(Integer id) {
         Optional<Order> order = orderRepository.findById(id);
-        if (order.isPresent()) {
-            return Optional.of(orderConverter.fromModel(order.get()));
+        return order.map(orderConverter::fromModel);
     }
-        return Optional.empty();
-}
 
-@Override
-public List<OrderDto> getOrders() {
-    Iterable<Order> orders = orderRepository.findAll();
-    return orderConverter.fromModel(orders);
-}
+    @Override
+    public List<OrderDto> getOrders() {
+        Iterable<Order> orders = orderRepository.findAll();
+        return orderConverter.fromModel(orders);
+    }
 
-@Override
-public boolean saveNewOrder(OrderDto dto) {
-    //  return orderJDBCRepository.save(dto);
-    return true;
-}
+    @Override
+    public OrderDto saveNewOrder(OrderDto dto) {
+        Order order = orderConverter.toModel(dto);
+        return orderConverter.fromModel(orderRepository.save(order));
+    }
 
-@Override
-public boolean updateOrder(Integer id, OrderDto dto) {
-       /* Optional<OrderDto> order = orderJDBCRepository.getById(id);
-        if (order.isEmpty()) {
-            throw new ResourceNotFoundException("Order not exist with id: " + id);
-        } else {
-            order.get().setDate(dto.getDate());
-            order.get().setCost(dto.getCost());
-            return orderJDBCRepository.updateById(order.get());
-        }*/
-    return true;
-}
+    @Override
+    public boolean updateOrder(Integer id, OrderDto dto) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent()) {
+            Order initial = order.get();
+            Order updated = orderConverter.toModel(initial, dto);
+            orderRepository.save(updated);
+            return true;
+        }
+        return false;
+    }
 
-@Override
-public boolean deleteOrder(Integer id) {
-    // return orderJDBCRepository.deleteById(id);
-    return true;
-}
+    @Override
+    public boolean deleteOrder(Integer id) {
+        if (orderRepository.existsById(id)) {
+            orderRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

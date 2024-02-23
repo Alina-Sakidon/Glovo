@@ -11,7 +11,7 @@ public interface OrderService {
 
     List<OrderDto> getOrders();
 
-    boolean saveNewOrder(OrderDto dto);
+    OrderDto saveNewOrder(OrderDto dto);
 
     boolean updateOrder(Integer id, OrderDto dto);
 
