@@ -51,7 +51,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createNewOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<ApiResponse<OrderDto>> createNewOrder(@RequestBody OrderDto orderDto) {
         if (!(orderService.saveNewOrder(orderDto) == null)) {
             return ResponseEntity.ok().build();
         }
@@ -59,7 +59,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<OrderDto> deleteOrderById(@PathVariable("orderId") Integer orderId) {
+    public ResponseEntity<ApiResponse<OrderDto>> deleteOrderById(@PathVariable("orderId") Integer orderId) {
         if (orderService.deleteOrder(orderId)) {
             return ResponseEntity.noContent().build();
         }
@@ -68,7 +68,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<OrderDto> updateOrderById(@PathVariable("orderId") Integer orderId, @RequestBody OrderDto orderDto) {
+    public ResponseEntity<ApiResponse<OrderDto>> updateOrderById(@PathVariable("orderId") Integer orderId, @RequestBody OrderDto orderDto) {
         if (orderService.updateOrder(orderId, orderDto)) {
             return ResponseEntity.ok().build();
         }
