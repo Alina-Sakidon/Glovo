@@ -7,6 +7,8 @@ import com.company.glovo.repository.order.OrderRepository;
 import com.company.glovo.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +28,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getOrders() {
-        Iterable<Order> orders = orderRepository.findAll();
+    public List<OrderDto> getOrders(Pageable pageable) {
+        Page<Order> page = orderRepository.findAll(pageable);
+        List<Order> orders = page.getContent();
         return orderConverter.fromModel(orders);
     }
 
