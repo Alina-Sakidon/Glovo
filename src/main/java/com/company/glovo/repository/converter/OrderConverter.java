@@ -38,7 +38,7 @@ public class OrderConverter {
                 .build();
     }
 
-    public Order toModel(Order order, OrderDto orderDto){
+    public Order toModel(Order order, OrderDto orderDto) {
         order.setDate(orderDto.getDate());
         order.setCost(orderDto.getCost());
         order.setProducts(productsToModel(orderDto.getProducts()));
