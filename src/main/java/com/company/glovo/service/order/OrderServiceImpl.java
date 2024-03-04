@@ -24,7 +24,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<OrderDto> getOrderById(Integer id) {
         Optional<Order> order = orderRepository.findById(id);
-        return order.map(orderConverter::fromModel);
+        if (order.isPresent()) {
+            return Optional.of(orderConverter.fromModel(order.get()));
+        }
+        return Optional.empty();
     }
 
     @Override
