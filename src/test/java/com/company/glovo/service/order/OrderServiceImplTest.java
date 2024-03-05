@@ -35,6 +35,9 @@ class OrderServiceImplTest {
     private OrderRepository orderRepository;
     @Mock
     private OrderConverter orderConverter;
+
+    @Mock
+    private Page<Order> ordersPage;
     @Mock
     private Order order, order2;
     private OrderDto orderDto;
@@ -79,10 +82,11 @@ class OrderServiceImplTest {
                 .id(99)
                 .cost(99.9)
                 .build());
-        Page<Order> page = new PageImpl<>(orders);
-        Pageable pageRequest = PageRequest.of(0, page.getContent().size());
-        when(orderRepository.findAll(any(Pageable.class))).thenReturn(page);
+        when(orderRepository.findAll(any(Pageable.class))).thenReturn(ordersPage);
+        when(ordersPage.getContent()).thenReturn(orders);
         when(orderConverter.fromModel(orders)).thenReturn(orderDtos);
+        Pageable pageRequest = PageRequest.of(0, ordersPage.getContent().size());
+
 
         List<OrderDto> result = testInstance.getOrders(pageRequest);
 
