@@ -74,10 +74,13 @@ class OrderServiceImplTest {
 
     @Test
     void shouldReturnAllOrders() {
-        Pageable pageRequest = PageRequest.of(0, 2);
         List<Order> orders = List.of(order, order2);
-        List<OrderDto> orderDtos = Arrays.asList(orderDto, OrderDto.builder().id(99).cost(99.9).build());//todo check mock
-        Page<Order> page = new PageImpl<>(orders, pageRequest, 0);
+        List<OrderDto> orderDtos = Arrays.asList(orderDto, OrderDto.builder()
+                .id(99)
+                .cost(99.9)
+                .build());
+        Page<Order> page = new PageImpl<>(orders);
+        Pageable pageRequest = PageRequest.of(0, page.getContent().size());
         when(orderRepository.findAll(any(Pageable.class))).thenReturn(page);
         when(orderConverter.fromModel(orders)).thenReturn(orderDtos);
 
