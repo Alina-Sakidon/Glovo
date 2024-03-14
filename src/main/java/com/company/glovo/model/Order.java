@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,13 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table("orders")
+@Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
+    @GeneratedValue
     private Integer id;
     private LocalDate date;
     private Double cost;
-    @MappedCollection(idColumn = "orders", keyColumn = "id")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Product> products;
 }

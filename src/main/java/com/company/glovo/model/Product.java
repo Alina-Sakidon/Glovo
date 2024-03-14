@@ -5,16 +5,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table("products")
+@Entity
+@Table(name = "products")
 public class Product {
 
     @Id
+    @GeneratedValue
     private Integer id;
     private String name;
     private Double cost;
