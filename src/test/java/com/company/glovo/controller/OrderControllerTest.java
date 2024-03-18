@@ -37,7 +37,7 @@ class OrderControllerTest {
     private OrderRepository orderRepository;
 
     @Test
-    void shouldGetOrderById() throws JsonProcessingException {
+    void shouldGetOrderById()  {
         Order order = Order.builder()
                 .date(LocalDate.now())
                 .cost(91.1)
@@ -50,10 +50,8 @@ class OrderControllerTest {
         String url = "http://localhost:" + port + "/api/v1/orders/";
 
 
-        ResponseEntity<ApiResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, ApiResponse.class);
-        // Assertions.assertEquals(savedOrder.getId(), dto.getId()
-        var a = responseEntity.getBody().getData();
-        List<OrderDto> itemWithOwner = new ObjectMapper().readValue(a.toString(),List.class);
+        ResponseEntity<ApiResponse<OrderDto>> responseEntity = restTemplate.exchange(url, HttpMethod.GET,
+                null, new ParameterizedTypeReference<ApiResponse<OrderDto>>() {});
     }
 
 
