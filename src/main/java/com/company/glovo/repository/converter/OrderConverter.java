@@ -18,7 +18,7 @@ public class OrderConverter {
                 .id(order.getId())
                 .date(order.getDate())
                 .cost(order.getCost())
-                .products(productsFromModel(order.getProducts()))
+                .products(productsFromModel(order.getProduct()))
                 .build();
     }
 
@@ -34,14 +34,14 @@ public class OrderConverter {
         return Order.builder()
                 .date(dto.getDate())
                 .cost(dto.getCost())
-                .products(productsToModel(dto.getProducts()))
+                .product(productsToModel(dto.getProducts()))
                 .build();
     }
 
     public Order toModel(Order order, OrderDto orderDto) {
         order.setDate(orderDto.getDate());
         order.setCost(orderDto.getCost());
-        order.setProducts(productsToModel(orderDto.getProducts()));
+        order.setProduct(productsToModel(orderDto.getProducts()));
         return order;
     }
 

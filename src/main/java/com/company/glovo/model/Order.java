@@ -1,15 +1,13 @@
 package com.company.glovo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,5 +21,5 @@ public class Order {
     private LocalDate date;
     private Double cost;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Product> products;
+    private List<Product> product;
 }
