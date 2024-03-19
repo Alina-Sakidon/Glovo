@@ -47,8 +47,9 @@ class OrderControllerTest {
         Order savedOrder = orderRepository.save(order);
         String url = "http://localhost:" + port + "/api/v1/orders/";
 
-        ResponseEntity<ApiResponse<List<OrderDto>>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-        });
+        ResponseEntity<ApiResponse<List<OrderDto>>> responseEntity = restTemplate.exchange(url, HttpMethod.GET,
+                null, new ParameterizedTypeReference<>() {
+                });
         List<OrderDto> dtos = Objects.requireNonNull(responseEntity.getBody()).getData();
 
         Assertions.assertEquals(savedOrder.getId(), dtos.get(0).getId());
