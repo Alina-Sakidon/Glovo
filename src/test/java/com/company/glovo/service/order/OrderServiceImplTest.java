@@ -98,14 +98,15 @@ class OrderServiceImplTest {
     @Test
     void shouldSaveNewOrder() {
         when(orderConverter.toModel(any(OrderDto.class))).thenReturn(order);
-        when(orderConverter.fromModel(orderRepository.save(order))).thenReturn(orderDto);
+        when(orderRepository.save(order)).thenReturn(order2);
+        when(orderConverter.fromModel(order2)).thenReturn(orderDto);
 
-        OrderDto result = testInstance.saveNewOrder(orderDto);
+        Optional<OrderDto> result = testInstance.saveNewOrder(orderDto);
 
         assertNotNull(result);
         verify(orderConverter).toModel(orderDto);
         verify(orderConverter).fromModel((orderRepository).save(order));
-        assertEquals(result, orderDto);
+        assertEquals(result.get(), orderDto);
     }
 
     @Test

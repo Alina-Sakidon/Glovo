@@ -52,8 +52,12 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<OrderDto>> createNewOrder(@RequestBody OrderDto orderDto) {
-        if (!(orderService.saveNewOrder(orderDto) == null)) {
-            return ResponseEntity.ok().build();
+        ApiResponse<OrderDto> response = new ApiResponse<>();
+        Optional<OrderDto> order = orderService.saveNewOrder(orderDto);
+        if (order.isPresent()) {
+            response.setSuccess(true);
+            response.setData(order.get());
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
         return ResponseEntity.badRequest().build();
     }

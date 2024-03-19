@@ -39,9 +39,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto saveNewOrder(OrderDto dto) {
+    public Optional<OrderDto> saveNewOrder(OrderDto dto) {
         Order order = orderConverter.toModel(dto);
-        return orderConverter.fromModel(orderRepository.save(order));
+        Optional<Order> savedOrder = Optional.of(orderRepository.save(order));
+        return savedOrder.map(orderConverter::fromModel);
     }
 
     @Override

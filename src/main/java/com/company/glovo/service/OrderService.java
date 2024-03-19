@@ -13,7 +13,7 @@ public interface OrderService {
 
     List<OrderDto> getOrders(Pageable pageable);
 
-    OrderDto saveNewOrder(OrderDto dto);
+    Optional<OrderDto> saveNewOrder(OrderDto dto);
 
     boolean updateOrder(Integer id, OrderDto dto);
 
