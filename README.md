@@ -6,19 +6,19 @@ This is a simple Java / Maven / Spring Boot application that can be used as a st
 
 ## Profiles
 * active profile "default" with PostgresSQL relational database
-* testing profile "test" with an in-memory database (H2) 
+* testing profile "test" with an in-memory database (H2)
 
 ## Running the project with PostgresSQL
 
 This project uses PostgresSQL database so that you need to install a database in order to run it.
 You can install PostgresSQL server by one of these methods:
 * manually. For more, see https://www.postgresql.org/docs/current/runtime.html
-* using Docker. For more, see https://hub.docker.com/_/postgres 
+* using Docker. For more, see https://hub.docker.com/_/postgres
 
 ## How to Run
 
 * Clone this repository
-* Make sure you are using JDK and Maven 
+* Make sure you are using JDK and Maven
 * You can build the project and run the tests by running **maven clean -> compile**
 * Once successfully built, you can run the service by one of these two methods:
 ```
