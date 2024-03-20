@@ -19,7 +19,7 @@ You can install PostgresSQL server by one of these methods:
 
 * Clone this repository
 * Make sure you are using JDK and Maven
-* Build the project (also by running **maven clean -> compile**)
+* Build the project 
 * Once successfully built, you can run the service by one of these two methods:
 ```
         using IDE:  maven clean -> compile -> run GlovoApplication.java
