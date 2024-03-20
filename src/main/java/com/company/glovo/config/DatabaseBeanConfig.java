@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 @Configuration
 public class DatabaseBeanConfig {
 
-   /* @Bean
+    @Bean
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
@@ -19,5 +19,5 @@ public class DatabaseBeanConfig {
         dataSource.setPassword("dtrm65");
 
         return dataSource;
-    }*/
+    }
 }

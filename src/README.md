@@ -19,13 +19,13 @@ You can install PostgresSQL server by one of these methods:
 
 * Clone this repository
 * Make sure you are using JDK and Maven 
-* You can build the project and run the tests by running **maven clean -> test**
+* You can build the project and run the tests by running **maven clean -> compile**
 * Once successfully built, you can run the service by one of these two methods:
 ```
-        mvn spring-boot:run -Drun.arguments="spring.profiles.active=default"
-```
-```
         using IDE:  maven clean -> compile -> run GlovoApplication.java
+```
+```
+        mvn spring-boot:run -Drun.arguments="spring.profiles.active=default"
 ```
 Once the application runs you should see something like this
 
