@@ -1,8 +1,8 @@
 package com.company.glovo.service.order;
 
 import com.company.glovo.dto.OrderDto;
+import com.company.glovo.mapper.OrderMapper;
 import com.company.glovo.model.Order;
-import com.company.glovo.repository.converter.OrderConverter;
 import com.company.glovo.repository.order.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class OrderServiceImplTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
-    private OrderConverter orderConverter;
+    private OrderMapper orderMapper;
 
     @Mock
     private Page<Order> ordersPage;
@@ -53,12 +53,12 @@ class OrderServiceImplTest {
     @Test
     void shouldReturnOrderById() {
         when(orderRepository.findById(anyInt())).thenReturn(Optional.of(order));
-        when(orderConverter.fromModel(order)).thenReturn(orderDto);
+        when(orderMapper.orderToOrderDto(order)).thenReturn(orderDto);
 
         Optional<OrderDto> result = testInstance.getOrderById(orderDto.getId());
 
         verify(orderRepository).findById(orderDto.getId());
-        verify(orderConverter).fromModel(order);
+        verify(orderMapper).orderToOrderDto(order);
         assertThat(result).isPresent();
         assertEquals(orderDto.getId(), result.get().getId());
     }
@@ -70,7 +70,7 @@ class OrderServiceImplTest {
         Optional<OrderDto> result = testInstance.getOrderById(orderDto.getId());
 
         verify(orderRepository).findById(orderDto.getId());
-        verify(orderConverter, never()).fromModel(order);
+        verify(orderMapper, never()).orderToOrderDto(order);
         assertThat(result).isEmpty();
     }
 
@@ -83,7 +83,7 @@ class OrderServiceImplTest {
                 .build());
         when(orderRepository.findAll(any(Pageable.class))).thenReturn(ordersPage);
         when(ordersPage.getContent()).thenReturn(orders);
-        when(orderConverter.fromModel(orders)).thenReturn(orderDtos);
+        when(orderMapper.toOrderDtoList(orders)).thenReturn(orderDtos);
         Pageable pageRequest = PageRequest.of(0, ordersPage.getContent().size());
 
 
@@ -91,34 +91,35 @@ class OrderServiceImplTest {
 
         assertNotNull(result);
         verify(orderRepository).findAll(pageRequest);
-        verify(orderConverter).fromModel(orders);
+        verify(orderMapper).toOrderDtoList(orders);
         assertEquals(result.size(), 2);
     }
 
     @Test
     void shouldSaveNewOrder() {
-        when(orderConverter.toModel(any(OrderDto.class))).thenReturn(order);
+        when(orderMapper.orderDtoToOrder(any(OrderDto.class))).thenReturn(order);
         when(orderRepository.save(order)).thenReturn(order2);
-        when(orderConverter.fromModel(order2)).thenReturn(orderDto);
+        when(orderMapper.orderToOrderDto(order2)).thenReturn(orderDto);
 
         Optional<OrderDto> result = testInstance.saveNewOrder(orderDto);
 
         assertNotNull(result);
-        verify(orderConverter).toModel(orderDto);
-        verify(orderConverter).fromModel((orderRepository).save(order));
+        verify(orderMapper).orderDtoToOrder(orderDto);
+        verify(orderMapper).orderToOrderDto((orderRepository).save(order));
         assertEquals(result.get(), orderDto);
     }
 
     @Test
     void shouldUpdateOrderById() {
         when(orderRepository.findById(anyInt())).thenReturn(Optional.of(order));
-        when(orderConverter.toModel(order, orderDto)).thenReturn(order);
+        when(orderMapper.toTarget(orderDto, order)).thenReturn(order);
         when(orderRepository.save(order)).thenReturn(order);
 
         Boolean result = testInstance.updateOrder(orderDto.getId(), orderDto);
 
         verify(orderRepository).findById(orderDto.getId());
-        verify(orderConverter).toModel(order, orderDto);
+        verify(orderMapper).toTarget(orderDto, order);
+        verify(orderRepository).save(order);
         assertNotNull(result);
         assertEquals(result, true);
     }
@@ -130,12 +131,11 @@ class OrderServiceImplTest {
         Boolean result = testInstance.updateOrder(orderDto.getId(), orderDto);
 
         verify(orderRepository).findById(orderDto.getId());
-        verify(orderConverter, never()).toModel(order, orderDto);
+        verify(orderMapper, never()).toTarget(orderDto, order);
         verify(orderRepository, never()).save(order);
         assertNotNull(result);
         assertEquals(result, false);
     }
-
     @Test
     void shouldDeleteOrderById() {
         when(orderRepository.existsById(anyInt())).thenReturn(true);

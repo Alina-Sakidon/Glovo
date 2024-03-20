@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DatabaseBeanConfig {
-
+/*
     @Bean
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
@@ -19,5 +19,5 @@ public class DatabaseBeanConfig {
         dataSource.setPassword("dtrm65");
 
         return dataSource;
-    }
+    }*/
 }

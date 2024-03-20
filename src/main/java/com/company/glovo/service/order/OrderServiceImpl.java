@@ -1,8 +1,8 @@
 package com.company.glovo.service.order;
 
 import com.company.glovo.dto.OrderDto;
+import com.company.glovo.mapper.OrderMapper;
 import com.company.glovo.model.Order;
-import com.company.glovo.repository.converter.OrderConverter;
 import com.company.glovo.repository.order.OrderRepository;
 import com.company.glovo.service.OrderService;
 
@@ -19,14 +19,14 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderConverter orderConverter;
+    private final OrderMapper orderMapper;
 
 
     @Override
     public Optional<OrderDto> getOrderById(Integer id) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent()) {
-            return Optional.of(orderConverter.fromModel(order.get()));
+            return Optional.of(orderMapper.orderToOrderDto(order.get()));
         }
         return Optional.empty();
     }
@@ -35,14 +35,14 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDto> getOrders(Pageable pageable) {
         Page<Order> page = orderRepository.findAll(pageable);
         List<Order> orders = page.getContent();
-        return orderConverter.fromModel(orders);
+        return orderMapper.toOrderDtoList(orders);
     }
 
     @Override
     public Optional<OrderDto> saveNewOrder(OrderDto dto) {
-        Order order = orderConverter.toModel(dto);
+        Order order = orderMapper.orderDtoToOrder(dto);
         Optional<Order> savedOrder = Optional.of(orderRepository.save(order));
-        return savedOrder.map(orderConverter::fromModel);
+        return savedOrder.map(orderMapper::orderToOrderDto);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent()) {
             Order initial = order.get();
-            Order updated = orderConverter.toModel(initial, dto);
+            Order updated = orderMapper.toTarget(dto,initial);
             orderRepository.save(updated);
             return true;
         }
