@@ -19,7 +19,7 @@ You can install PostgresSQL server by one of these methods:
 
 * Clone this repository
 * Make sure you are using JDK and Maven
-* You can build the project and run the tests by running **maven clean -> compile**
+* Build the project (also by running **maven clean -> compile**)
 * Once successfully built, you can run the service by one of these two methods:
 ```
         using IDE:  maven clean -> compile -> run GlovoApplication.java
@@ -33,7 +33,6 @@ Once the application runs you should see something like this
 2024-03-20 08:19:04.298  INFO 35788 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 2024-03-20 08:19:04.351  INFO 35788 --- [           main] com.company.glovo.GlovoApplication       : Started GlovoApplication in 5.961 seconds (JVM running for 7.129)
 ```
-
 ## To view your H2 in-memory database
 The 'test' profile runs on H2 in-memory database. To view and query the database you can browse to http://localhost:8081/h2-console. Default username is 'sa' with a password 'password'.
 Note: integration tests use random port generation.
