@@ -7,6 +7,7 @@ import com.company.glovo.repository.order.OrderRepository;
 import com.company.glovo.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -26,8 +28,10 @@ public class OrderServiceImpl implements OrderService {
     public Optional<OrderDto> getOrderById(Integer id) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent()) {
+            log.debug("Order with id {} found in DB ", id);
             return Optional.of(orderMapper.orderToOrderDto(order.get()));
         }
+        log.debug("Order with id {} wasn't found in DB ", id);
         return Optional.empty();
     }
 
@@ -49,20 +53,24 @@ public class OrderServiceImpl implements OrderService {
     public boolean updateOrder(Integer id, OrderDto dto) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent()) {
+            log.debug("Order with id {} found in DB ", id);
             Order initial = order.get();
-            Order updated = orderMapper.toTarget(dto,initial);
+            Order updated = orderMapper.toTarget(dto, initial);
             orderRepository.save(updated);
             return true;
         }
+        log.debug("Order wasn't updated in DB");
         return false;
     }
 
     @Override
     public boolean deleteOrder(Integer id) {
         if (orderRepository.existsById(id)) {
+            log.debug("Order with id {} exist in DB ", id);
             orderRepository.deleteById(id);
             return true;
         }
+        log.debug("Order with id {} wasn't found in DB ", id);
         return false;
     }
 }

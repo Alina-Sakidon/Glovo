@@ -3,6 +3,7 @@ package com.company.glovo.controller;
 import com.company.glovo.dto.OrderDto;
 import com.company.glovo.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static com.company.glovo.controller.AppConstants.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/orders")
 @RestController
@@ -55,16 +57,19 @@ public class OrderController {
         ApiResponse<OrderDto> response = new ApiResponse<>();
         Optional<OrderDto> order = orderService.saveNewOrder(orderDto);
         if (order.isPresent()) {
+            log.debug("Order was created" + order.get());
             response.setSuccess(true);
             response.setData(order.get());
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
+        log.debug("Order wasn't created");
         return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<ApiResponse<OrderDto>> deleteOrderById(@PathVariable("orderId") Integer orderId) {
         if (orderService.deleteOrder(orderId)) {
+            log.debug("Order with id {} was deleted", orderId);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
@@ -74,8 +79,10 @@ public class OrderController {
     @PutMapping("/{orderId}")
     public ResponseEntity<ApiResponse<OrderDto>> updateOrderById(@PathVariable("orderId") Integer orderId, @RequestBody OrderDto orderDto) {
         if (orderService.updateOrder(orderId, orderDto)) {
+            log.debug("Order was updated ");
             return ResponseEntity.ok().build();
         }
+        log.debug("Order wasn't updated ");
         return ResponseEntity.notFound().build();
     }
 }
